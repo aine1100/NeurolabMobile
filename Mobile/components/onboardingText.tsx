@@ -33,11 +33,11 @@ export default function OnboardingText() {
   }, []);
 
   return (
-    <View className="flex flex-col items-center justify-center h-full bg-background-color gap-5" style={{gap:14}}>
+    <View className="flex flex-col items-center justify-center h-full bg-background-color gap-5" style={{gap:10}}>
       <Text className="text-lg text-white">Welcome,</Text>
 
       {/* Display active text content */}
-      <View style={{gap:5}} className="flex items-center justify-center gap-3 text-center">
+      <View style={{gap:2}} className="flex items-center justify-center gap-1 text-center">
         <Text className="text-2xl font-semibold text-white p-2">{userText[active].text1}</Text>
         <Text className="text-2xl font-semibold text-white p-2">{userText[active].text2}</Text>
         <Text className="text-2xl font-semibold text-white p-2">{userText[active].text3}</Text>

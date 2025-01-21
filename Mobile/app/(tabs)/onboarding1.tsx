@@ -6,7 +6,7 @@ import { router } from "expo-router";
 
 export default function Onboarding() {
   function handlePress(){
-    router.push("/(tabs)/sign-in")
+    router.push("/(tabs)/signUp")
   }
   return (
     <SafeAreaView className="bg-background-color h-full flex flex-col items-center justify-center gap-20 p-10">
