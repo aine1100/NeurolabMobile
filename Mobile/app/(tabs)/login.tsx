@@ -45,7 +45,7 @@ export default function Login() {
             <Text className="text-white font-medium ">{index.title}</Text>
             <TextInput
               placeholder={index.placeholder}
-              className="h-14 bg-gray-300 w-[400px] px-5 rounded-full placeholder:text-md"
+              className="h-14 bg-gray-300 w-[360px] px-5 rounded-full placeholder:text-md"
             />
           </View>
         ))}
@@ -56,7 +56,7 @@ export default function Login() {
         </Link>
       </View>
       <View className="flex items-center pb-10">
-        <TouchableOpacity className="bg-yellow-500  w-[400px] h-16 rounded-xl flex items-center justify-center">
+        <TouchableOpacity className="bg-yellow-500  w-[360px] h-16 rounded-xl flex items-center justify-center">
           <Text className="text-white font-semibold text-xl">Login</Text>
         </TouchableOpacity>
       </View>
@@ -82,7 +82,7 @@ export default function Login() {
         ></View>
       </View>
       <View className="flex flex-col items-center pb-10 gap-5">
-        <TouchableOpacity className="bg-white  w-[400px] h-16 rounded-full gap-5 flex flex-row items-center justify-center">
+        <TouchableOpacity className="bg-white  w-[360px] h-16 rounded-full gap-5 flex flex-row items-center justify-center">
         <Image source={google} className="size-8 " />
           <Text className="text-black font-semibold text-xl">Google</Text>
         </TouchableOpacity>
