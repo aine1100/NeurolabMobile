@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       colors:{
         "background-color":"#000026",
-        "text-color":"#B0961B"
+        "text-color":"#B0961B",
+        'neuro-gradient': 'linear-gradient(to bottom, #0d0b24, #1a1835, #2c2854, #c49c0f)',
       }
     },
   },

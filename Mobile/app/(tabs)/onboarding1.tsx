@@ -1,19 +1,31 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import logo from "../../assets/images/logo.png";
+import OnboardingText from "@/components/onboardingText";
+import { router } from "expo-router";
 
 export default function Onboarding() {
+  function handlePress(){
+    router.push("/(tabs)/sign-in")
+  }
   return (
-    <SafeAreaView className="bg-background-color h-full flex flex-1 gap-10 items-center justify-center ">
-      <View className="flex  items-center justify-center gap-5">
-       <Image source={logo} alt="Logo" className="size-36 mr-16"  />
-        <Text className="text-white font-semibold text-2xl ">
-          Neurolab
-        </Text>
+    <SafeAreaView className="bg-background-color h-full flex flex-col items-center justify-center gap-20 p-10">
+      {/* Logo Section */}
+      <View className="flex flex-row items-center justify-center pt-10">
+        <Image source={logo} alt="Logo" className="size-20" />
+        <Text className="text-white font-semibold text-xl ml-2">Neurolab</Text>
       </View>
-      <View className="flex p-10 items-center justify-center">
-        <Text className="text-white text-2xl ">Welcome</Text>
 
+      {/* Onboarding Text Section */}
+      <View className="flex flex-1 items-center justify-center">
+        <OnboardingText />
+      </View>
+
+      {/* Get Started Button */}
+      <View className="flex items-center pb-10">
+        <TouchableOpacity className="bg-yellow-500  w-[400px] h-16 rounded-full flex items-center justify-center" onPress={handlePress}>
+          <Text className="text-white font-semibold text-lg">Get Started</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
