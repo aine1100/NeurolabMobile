@@ -23,8 +23,8 @@ export default function Onboarding() {
       </View>
 
       {/* Get Started Button */}
-      <View className="flex items-center pb-10">
-        <TouchableOpacity className="bg-yellow-500  w-[360px] h-16 rounded-full flex items-center justify-center" onPress={handlePress}>
+      <View className="flex w-full items-center pb-10">
+        <TouchableOpacity className="bg-yellow-500  w-full h-16 rounded-full flex items-center justify-center" onPress={handlePress}>
           <Text className="text-white font-semibold text-lg">Get Started</Text>
         </TouchableOpacity>
       </View>

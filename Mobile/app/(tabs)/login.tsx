@@ -23,6 +23,10 @@ export default function Login() {
     router.push("/(tabs)/signUp");
   }
 
+  function handleLogin(){
+    router.push("/steps/screen1")
+  }
+
   return (
     <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start p-5 gap-5">
       {/* Welcome Message */}
@@ -63,7 +67,7 @@ export default function Login() {
 
       {/* Login Button */}
       <View className="flex items-center">
-        <TouchableOpacity className="bg-yellow-500 w-full h-16 rounded-xl flex items-center justify-center">
+        <TouchableOpacity className="bg-yellow-500 w-full h-16 rounded-xl flex items-center justify-center" onPress={handleLogin}>
           <Text className="text-white font-semibold text-xl">Login</Text>
         </TouchableOpacity>
       </View>
