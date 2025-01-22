@@ -1,7 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
-import stars from "../../assets/images/star.png";
-import google from "../../assets/images/google.png";
+import images from "@/constants/image";
 import { Link, router } from "expo-router";
 
 export default function SignUp() {
@@ -19,79 +18,100 @@ export default function SignUp() {
       placeholder: "",
     },
   ];
-   function handlePress(){
-      router.push("/(tabs)/login")
-    }
+
+  function handlePress() {
+    router.push("/(tabs)/login");
+  }
+
   return (
-    <SafeAreaView className="h-full bg-background-color flex flex-col justify-start p-10 gap-5 ">
-      <View
-        className="flex flex-row text-white  justify-center pt-10 gap-2"
-        style={{ gap: 2 }}
-      >
-        <Image source={stars} className="size-8 -mt-4" />
-        <Text className="font-bold text-2xl text-white">Welcome To NeuroLab</Text>
+    <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start p-5 gap-5">
+      {/* Welcome Message */}
+      <View className="flex flex-row justify-center items-center pt-10 gap-2">
+        <Image source={images.stars} className="h-8 w-8 -mt-4" />
+        <Text className="font-bold text-2xl text-white">
+          Welcome To NeuroLab
+        </Text>
       </View>
-      <View className="flex flex-row text-white justify-center ">
-        <Text className="text-gray-100 font-medium p-2 text-[13px] ">
+
+      <View className="flex flex-row justify-center">
+        <Text className="text-gray-100 font-medium p-2 text-sm">
           Sign up to track your mental health
         </Text>
       </View>
-      <View className="flex items-start flex-col gap-5">
-        {dataInputs.map((index, item) => (
+
+      {/* Input Fields */}
+      <View className="flex flex-col gap-5 w-full">
+        {dataInputs.map((input, index) => (
           <View
-            className="flex items-start flex-col gap-3 justify-start"
-            key={item}
+            className="flex flex-col gap-3 justify-start w-full"
+            key={index}
           >
-            <Text className="text-white font-medium ">{index.title}</Text>
+            <Text className="text-white font-medium">{input.title}</Text>
             <TextInput
-              placeholder={index.placeholder}
-              className="h-14 bg-gray-300 w-[360px] px-5 rounded-full placeholder:text-md"
+              placeholder={input.placeholder}
+              placeholderTextColor="#A9A9A9"
+              className="h-14 bg-gray-300 w-full px-5 rounded-full placeholder:text-md"
             />
           </View>
         ))}
       </View>
+
+      {/* Forgot Password Link */}
       <View className="flex items-end">
         <Link href="/" className="text-white text-right mr-5">
-          Forgot Password ?
+          Forgot Password?
         </Link>
       </View>
-      <View className="flex items-center pb-10">
-        <TouchableOpacity className="bg-yellow-500  w-[360px] h-16 rounded-xl flex items-center justify-center">
-          <Text className="text-white font-semibold text-xl" onPress={handlePress}>Sign Up</Text>
+
+      {/* Sign Up Button */}
+      <View className="flex items-center">
+        <TouchableOpacity className="bg-yellow-500 w-full h-16 rounded-xl flex items-center justify-center">
+          <Text className="text-white font-semibold text-xl" onPress={handlePress}>
+            Sign Up
+          </Text>
         </TouchableOpacity>
       </View>
-      <View className="flex items-center flex-row gap-3">
+
+      {/* Divider with "Or Sign In With" */}
+      <View className="flex flex-row items-center justify-center gap-3 mt-5">
         <View
           style={{
             backgroundColor: "white",
-            height: 3,
-            width: 150,
+            height: 2,
+            width: "30%",
             borderRadius: 50,
           }}
-          className=""
-        ></View>
+        />
         <Text className="text-white font-medium">Or Sign In With</Text>
-          <View
+        <View
           style={{
             backgroundColor: "white",
-            height: 3,
-            width: 150,
+            height: 2,
+            width: "30%",
             borderRadius: 50,
           }}
-          className=""
-        ></View>
+        />
       </View>
-      <View className="flex flex-col items-center pb-10 gap-5">
-        <TouchableOpacity className="bg-white  w-[360px] h-16 rounded-full gap-5 flex flex-row items-center justify-center">
-        <Image source={google} className="size-8 " />
+
+      {/* Google Sign In Button */}
+      <View className="flex flex-col items-center gap-5 mt-5">
+        <TouchableOpacity className="bg-white w-full h-16 rounded-full flex flex-row items-center justify-center gap-3">
+          <Image source={images.google} className="h-8 w-8" />
           <Text className="text-black font-semibold text-xl">Google</Text>
         </TouchableOpacity>
-        <View className="flex flex-row gap-8 items-center justify-center text-white">
-        <Text className="text-white text-xl font-medium">Already have an account</Text>
-        <Text className="text-[#283FB1] text-xl font-semibold">Sign Up</Text>
+
+        {/* Already Have an Account */}
+        <View className="flex flex-row gap-2 items-center">
+          <Text className="text-white text-base font-medium">
+            Already have an account?
+          </Text>
+          <TouchableOpacity onPress={handlePress}>
+            <Text className="text-blue-500 text-base font-semibold">
+              Log In
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      </View>
-     
     </SafeAreaView>
   );
 }

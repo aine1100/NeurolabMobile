@@ -1,9 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import logo from "../../assets/images/logo.png";
+
 import OnboardingText from "@/components/onboardingText";
 import { router } from "expo-router";
-
+import images from "@/constants/image"
+ 
 export default function Onboarding() {
   function handlePress(){
     router.push("/(tabs)/signUp")
@@ -12,7 +13,7 @@ export default function Onboarding() {
     <SafeAreaView className="bg-background-color h-full flex flex-col items-center justify-center gap-20 p-10">
       {/* Logo Section */}
       <View className="flex flex-row items-center justify-center pt-10">
-        <Image source={logo} alt="Logo" className="size-20" />
+        <Image source={images.logo} alt="Logo" className="size-20" />
         <Text className="text-white font-semibold text-xl ml-2">Neurolab</Text>
       </View>
 
