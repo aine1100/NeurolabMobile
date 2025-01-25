@@ -10,6 +10,7 @@ export default function SelectorQuestion({ text, selected, onSelect }: { text: s
     >
       <View style={styles.content}>
         <RadioButton
+         
           value="first"
           status={selected ? 'checked' : 'unchecked'}
           onPress={onSelect} // Trigger the onSelect function passed from parent
@@ -49,6 +50,6 @@ const styles = StyleSheet.create({
     color: "#111171", // Adjust the text color as needed
   },
   unselectedText: {
-    color: "white",
+    color: "black",
   },
 });
