@@ -17,7 +17,7 @@ export default function QuestionHeader({ title, percentage, content }: { title: 
             </View>
 
            
-            <View style={{ paddingHorizontal: 10, gap: 16, width: "100%" }}>
+            <View style={{ paddingHorizontal: 10, gap: 10, width: "100%" }}>
                 <View style={styles.progressBarBackground}>
                     <View
                         style={[styles.progressBarFill, { width: `${percentage}%` }]} // Dynamic width
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         width: 20,
     },
     title: {
-        fontSize: 20, // Equal to text-xl
+        fontSize: 16, // Equal to text-xl
         fontWeight: "500", // Equal to font-medium
         color: "#4B5563", // Equal to text-gray-600
     },
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
     },
     yellowStrip: {
         backgroundColor: "#FFD500",
-        height: 100, // Adjust height to fit content
+        height: 70, // Adjust height to fit content
         width: 8, // Width of the yellow strip
         borderRadius: 16,
     },
     content: {
-        fontSize: 20, 
+        fontSize: 16, 
         fontWeight: "400", // Bold text
         color: "#000023", // Text color
         flexWrap: "wrap", // Ensure text wraps if it's too long

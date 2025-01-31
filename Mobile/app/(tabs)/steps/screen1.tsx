@@ -15,21 +15,21 @@ export default function Greeting() {
         renderItem={({ item }) => <CategoryCards />}
         ListHeaderComponent={
          <View>
-           <View className="px-10 py-5 flex items-start gap-10">
+           <View className="px-10 py-2 flex items-start gap-2">
             {/* Greeting Section */}
-            <View className="flex gap-5">
+            <View className="flex gap-3">
               <Text className="text-2xl font-bold">👋</Text>
-              <Text className="text-3xl font-bold text-background-color">
+              <Text className="text-2xl font-bold text-background-color">
                 Hello <Text className="text-yellow-500">Mr. Tom</Text>, how are you feeling today?
               </Text>
-              <Text className="text-gray-700 text-xl">
+              <Text className="text-gray-700 text-md">
                 Before we check your mental status, you have to first answer a couple of questions to get accurate results.
               </Text>
             </View>
 
             {/* Categories Section */}
-            <View className="flex gap-5">
-              <Text className="text-3xl font-bold text-background-color">Categories</Text>
+            <View className="flex gap-3">
+              <Text className="text-2xl font-bold text-background-color">Categories</Text>
               
               
              

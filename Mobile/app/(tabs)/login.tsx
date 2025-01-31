@@ -5,10 +5,10 @@ import { Link, router } from "expo-router";
 
 export default function Login() {
   const dataInputs = [
-    {
-      title: "Full Names",
-      placeholder: "John Kalisa",
-    },
+    // {
+    //   title: "Full Names",
+    //   placeholder: "John Kalisa",
+    // },
     {
       title: "Email",
       placeholder: "John@gmail.com",
@@ -20,24 +20,22 @@ export default function Login() {
   ];
 
   function handlePress() {
-    router.push("/(tabs)/signUp");
-  }
-
-  function handleLogin(){
-    router.push("/steps/screen1")
+    router.push("/(tabs)/steps/screen1");
   }
 
   return (
-    <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start p-5 gap-5">
+    <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start px-5 pb-2 gap-5">
       {/* Welcome Message */}
       <View className="flex flex-row justify-center items-center pt-10 gap-2">
         <Image source={images.stars} className="h-8 w-8 -mt-4" />
-        <Text className="font-bold text-2xl text-white">Welcome Back</Text>
+        <Text className="font-bold text-2xl text-white">
+          Login To Your Account
+        </Text>
       </View>
 
       <View className="flex flex-row justify-center">
         <Text className="text-gray-100 font-medium p-2 text-sm">
-          Login to access your account
+          Sign up to track your mental health
         </Text>
       </View>
 
@@ -52,7 +50,7 @@ export default function Login() {
             <TextInput
               placeholder={input.placeholder}
               placeholderTextColor="#A9A9A9"
-              className="h-14 bg-gray-300 w-full px-5 rounded-full placeholder:text-md"
+              className="h-12 bg-gray-300 w-full px-5 rounded-full placeholder:text-md"
             />
           </View>
         ))}
@@ -65,15 +63,17 @@ export default function Login() {
         </Link>
       </View>
 
-      {/* Login Button */}
+      {/* Sign Up Button */}
       <View className="flex items-center">
-        <TouchableOpacity className="bg-yellow-500 w-full h-16 rounded-xl flex items-center justify-center" onPress={handleLogin}>
-          <Text className="text-white font-semibold text-xl">Login</Text>
+        <TouchableOpacity className="bg-yellow-500 w-full h-14 rounded-xl flex items-center justify-center">
+          <Text className="text-white font-semibold text-xl" onPress={handlePress}>
+            Login
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* Divider with "Or Sign In With" */}
-      <View className="flex flex-row items-center justify-center gap-3 mt-5">
+      <View className="flex flex-row items-center justify-center gap-3 ">
         <View
           style={{
             backgroundColor: "white",
@@ -94,19 +94,21 @@ export default function Login() {
       </View>
 
       {/* Google Sign In Button */}
-      <View className="flex flex-col items-center gap-5 mt-5">
-        <TouchableOpacity className="bg-white w-full h-16 rounded-full flex flex-row items-center justify-center gap-3">
-          <Image source={images.google} className="h-8 w-8" />
+      <View className="flex flex-col items-center gap-3  ">
+        <TouchableOpacity className="bg-white w-full h-14 rounded-full flex flex-row items-center justify-center gap-3">
+          <Image source={images.google} className="h-6 w-6" />
           <Text className="text-black font-semibold text-xl">Google</Text>
         </TouchableOpacity>
 
-        {/* Sign Up Link */}
+        {/* Already Have an Account */}
         <View className="flex flex-row gap-2 items-center">
           <Text className="text-white text-base font-medium">
-            Don't have an account?
+            Don't have an account
           </Text>
           <TouchableOpacity onPress={handlePress}>
-            <Text className="text-blue-500 text-base font-semibold">Sign Up</Text>
+            <Text className="text-blue-500 text-base font-semibold">
+              Sign Up
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

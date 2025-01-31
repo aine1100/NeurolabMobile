@@ -24,7 +24,7 @@ export default function SignUp() {
   }
 
   return (
-    <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start p-5 gap-5">
+    <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start px-5 pb-2 gap-5">
       {/* Welcome Message */}
       <View className="flex flex-row justify-center items-center pt-10 gap-2">
         <Image source={images.stars} className="h-8 w-8 -mt-4" />
@@ -50,7 +50,7 @@ export default function SignUp() {
             <TextInput
               placeholder={input.placeholder}
               placeholderTextColor="#A9A9A9"
-              className="h-14 bg-gray-300 w-full px-5 rounded-full placeholder:text-md"
+              className="h-12 bg-gray-300 w-full px-5 rounded-full placeholder:text-md"
             />
           </View>
         ))}
@@ -65,7 +65,7 @@ export default function SignUp() {
 
       {/* Sign Up Button */}
       <View className="flex items-center">
-        <TouchableOpacity className="bg-yellow-500 w-full h-16 rounded-xl flex items-center justify-center">
+        <TouchableOpacity className="bg-yellow-500 w-full h-14 rounded-xl flex items-center justify-center">
           <Text className="text-white font-semibold text-xl" onPress={handlePress}>
             Sign Up
           </Text>
@@ -73,7 +73,7 @@ export default function SignUp() {
       </View>
 
       {/* Divider with "Or Sign In With" */}
-      <View className="flex flex-row items-center justify-center gap-3 mt-5">
+      <View className="flex flex-row items-center justify-center gap-3 ">
         <View
           style={{
             backgroundColor: "white",
@@ -94,9 +94,9 @@ export default function SignUp() {
       </View>
 
       {/* Google Sign In Button */}
-      <View className="flex flex-col items-center gap-5 mt-5">
-        <TouchableOpacity className="bg-white w-full h-16 rounded-full flex flex-row items-center justify-center gap-3">
-          <Image source={images.google} className="h-8 w-8" />
+      <View className="flex flex-col items-center gap-3  ">
+        <TouchableOpacity className="bg-white w-full h-14 rounded-full flex flex-row items-center justify-center gap-3">
+          <Image source={images.google} className="h-6 w-6" />
           <Text className="text-black font-semibold text-xl">Google</Text>
         </TouchableOpacity>
 
