@@ -82,7 +82,7 @@ export default function Login() {
             borderRadius: 50,
           }}
         />
-        <Text className="text-white font-medium">Or Sign In With</Text>
+        <Text className="text-white font-medium">Or Login With</Text>
         <View
           style={{
             backgroundColor: "white",

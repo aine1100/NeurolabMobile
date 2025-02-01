@@ -8,10 +8,10 @@ import { router } from "expo-router";
 export default function QuestionThree() {
   // Array of text values for each selector block
   const questions = [
-    "Consumed caffeine (e.g., coffee, tea, energy drinks)",
+    "Consumed caffeine",
     "Consumed alcohol",
     "Used recreational drugs or stimulants",
-    "Took prescribed medications or supplements"
+    "Took prescribed medications"
   ];
 
   // Set the default selected index
@@ -22,7 +22,7 @@ export default function QuestionThree() {
       <FlatList
         data={questions}
         renderItem={({ item, index }) => (
-          <View className="w-full px-8 py-5 rounded-md " style={{ paddingHorizontal: 5 }}>
+          <View className="w-full px-7 py-2 rounded-md " style={{ paddingHorizontal: 5 }}>
             <SelectorQuestion
               text={item}
               selected={selected === index} // Pass selected state to SelectorQuestion
@@ -31,7 +31,7 @@ export default function QuestionThree() {
           </View>
         )}
         ListHeaderComponent={
-          <View className="py-5 px-5">
+          <View className="py-2 px-5">
             <QuestionHeader
               title="SUBSTANCE USE"
               percentage={60}

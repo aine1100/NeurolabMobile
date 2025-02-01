@@ -22,7 +22,7 @@ export default function QuestionTwo() {
       <FlatList
         data={questions}
         renderItem={({ item, index }) => (
-          <View className="w-full px-8 py-5 rounded-md " style={{ paddingHorizontal: 5 }}>
+          <View className="w-full px-7 py-2 rounded-md " style={{ paddingHorizontal: 5 }}>
             <SelectorQuestion
               text={item}
               selected={selected === index} // Pass selected state to SelectorQuestion
@@ -31,7 +31,7 @@ export default function QuestionTwo() {
           </View>
         )}
         ListHeaderComponent={
-          <View className="py-5 px-5">
+          <View className="py-2 px-5">
             <QuestionHeader
               title="MENTAL AND ENV’T FACTORS"
               percentage={40}

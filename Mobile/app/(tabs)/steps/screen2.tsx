@@ -25,7 +25,7 @@ export default function QuestionOne() {
       <FlatList
         data={questions}
         renderItem={({ item, index }) => (
-          <View className="w-full px-8 py-2 rounded-md " style={{ paddingHorizontal: 5 }}>
+          <View className="w-full px-7 py-2 rounded-md " style={{ paddingHorizontal: 5 }}>
             <SelectorQuestion
               text={item}
               selected={selected === index} // Pass selected state to SelectorQuestion

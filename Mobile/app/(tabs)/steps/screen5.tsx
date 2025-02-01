@@ -9,9 +9,9 @@ export default function QuestionFour() {
   // Array of text values for each selector block
   const questions = [
     "Yes, intense activity (e.g., running, gym workout)",
-    "Yes, moderate activity (e.g., walking, yoga)",
-    "No, minimal activity (e.g., sitting, light mov’t)",
-    "Unusual activity (e.g., extreme exertion or none at all)"
+    "Yes, moderate activity ( walking, yoga)",
+    "No, minimal activity (sitting, light mov’t)",
+    "Unusual activity (extreme exertion)"
   ];
 
   // Set the default selected index
@@ -22,7 +22,7 @@ export default function QuestionFour() {
       <FlatList
         data={questions}
         renderItem={({ item, index }) => (
-          <View className="w-full px-8 py-5 rounded-md " style={{ paddingHorizontal: 5 }}>
+          <View className="w-full px-7 py-2 rounded-md " style={{ paddingHorizontal: 5 }}>
             <SelectorQuestion
               text={item}
               selected={selected === index} // Pass selected state to SelectorQuestion
@@ -31,7 +31,7 @@ export default function QuestionFour() {
           </View>
         )}
         ListHeaderComponent={
-          <View className="py-5 px-5">
+          <View className="py-2 px-5">
             <QuestionHeader
               title="PHYSICAL ACTIVITY "
               percentage={80}
