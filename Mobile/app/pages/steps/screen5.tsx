@@ -52,7 +52,7 @@ export default function QuestionFour() {
                                           <ButtonOne
                                             style={styles.buttonNo}
                                             text="Next"
-                                            onPress={()=> router.push("/steps/screen6")} // Trigger navigation to the next screen
+                                            onPress={()=> router.push("/pages/steps/screen6")} // Trigger navigation to the next screen
                                             classname="bg-white w-20 h-8 rounded-full"
                                             textstyle={styles.textBlack}
                                           />

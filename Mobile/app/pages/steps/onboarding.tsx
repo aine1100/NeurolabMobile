@@ -39,7 +39,7 @@ export default function OnBoarding(){
                 }
 
             </View>
-            <TouchableOpacity className="flex flex-row gap-3 items-center justify-center" onPress={()=>router.push("/(tabs)/steps/deviceConnection")}>
+            <TouchableOpacity className="flex flex-row gap-3 items-center justify-center" onPress={()=>router.push("/pages/steps/deviceConnection")}>
                 <Image source={image.next} className="size-8"/>
                 <Text className="text-md font-semibold text-white">Continue With Further Steps</Text>
             </TouchableOpacity>

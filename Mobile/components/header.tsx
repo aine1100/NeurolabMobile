@@ -6,15 +6,15 @@ export default function Header(){
     const actions=[
         {
             icon:image.search,
-            location:"/",
+            location:"/home/",
         },
         {
             icon:image.notification,
-            location:"/",
+            location:"/hello/",
         }
     ]
     return(
-        <View className="bg-background-color w-full flex flex-row justify-between items-center p-2">
+        <View className="bg-background-color w-full flex flex-row justify-between items-center p-2  " style={{padding:15}}>
             <View className="flex flex-row items-center justify-center gap-3 ">
                  <Text className="text-2xl font-bold">👋</Text>
                               <Text className="text-md font-bold text-white ">
@@ -25,8 +25,8 @@ export default function Header(){
             <View className="flex flex-row items-center justify-center gap-3 self-end ">
                {
                 actions.map((item,index)=>(
-                    <TouchableOpacity className="flex flex-row" onPress={()=>router.push(item.location)} key={index}>
-                        <Image source={item.icon} className="size-5"/>
+                    <TouchableOpacity className="flex flex-row" onPress={()=>router.push(item.location as any)} key={index}>
+                        <Image source={item.icon}  style={{width:24,height:28}} resizeMode="contain"/>
 
 
                     </TouchableOpacity>

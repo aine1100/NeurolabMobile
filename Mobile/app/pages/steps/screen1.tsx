@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Greeting() {
   function handlePress(){
-    router.push("/(tabs)/steps/screen2")
+    router.push("/pages/steps/screen2")
   }
   return (
     <SafeAreaView className="bg-white h-full w-full">

@@ -7,7 +7,7 @@ import images from "@/constants/image"
  
 export default function Onboarding() {
   function handlePress(){
-    router.push("/(tabs)/signUp")
+    router.push("/pages/signUp")
   }
   return (
     <SafeAreaView className="bg-background-color h-full flex flex-col items-center justify-center gap-20 p-10">

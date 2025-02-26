@@ -10,7 +10,7 @@ export default function DeviceConn() {
   const batteryPercent = 10;
 
   return (
-    <SafeAreaView className="flex-1 px-5 py-5 gap-5 w-full items-start bg-white">
+    <SafeAreaView  className="flex-1 px-5 py-5 gap-5 w-full items-start bg-white">
       {/* Header Section */}
       <View className="flex flex-row w-full items-center justify-center gap-16">
         <Text className="text-black text-md font-semibold">
@@ -71,9 +71,11 @@ export default function DeviceConn() {
             <Text className="text-gray-700  text-center">
             You will soon be notified of your mental health status
             </Text>
-            <Image source={image.not} className="size-6"/>
+          <TouchableOpacity onPress={()=>{router.back()}}>
+          <Image source={image.not} className="size-6"/>
+          </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => router.push("/(tabs)/dashboard/home")}
+              onPress={() => router.push("/(tabs)/home")}
               className="bg-background-color items-center justify-center rounded-lg py-4 w-full"
             >
               <Text className="text-white text-sm font-medium">View Dashboard</Text>

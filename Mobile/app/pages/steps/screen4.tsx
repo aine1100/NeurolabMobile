@@ -5,13 +5,13 @@ import { useState } from "react";
 import { QuestionButton,ButtonOne } from "@/components/button";
 import { router } from "expo-router";
 
-export default function QuestionThree() {
+export default function QuestionTwo() {
   // Array of text values for each selector block
   const questions = [
-    "Consumed caffeine",
-    "Consumed alcohol",
-    "Used recreational drugs or stimulants",
-    "Took prescribed medications"
+    "High stress or anxiety",
+    "Moderate stress or occasional emotional fluctuations",
+    "Calm and emotionally stable",
+    "Other (e.g., grief, anger, or heightened excitement)"
   ];
 
   // Set the default selected index
@@ -33,31 +33,31 @@ export default function QuestionThree() {
         ListHeaderComponent={
           <View className="py-2 px-5">
             <QuestionHeader
-              title="SUBSTANCE USE"
-              percentage={60}
-              content="Have you consumed any caffeine, alcohol, or taken any medications or recreational drugs in the past 24 hours?"
+              title="MENTAL AND ENV’T FACTORS"
+              percentage={40}
+              content="Have you been feeling particularly stressed, anxious, or experiencing strong emotions recently?"
             />
           </View>
         }
         ListFooterComponent={
           <View className="w-full gap-8 flex items-center justify-center px-5 py-4">
-             <View className="w-full flex gap-5 flex-row justify-center items-center">
-                  <ButtonOne
-                    style={styles.buttonYes}
-                    text="Back"
-                    onPress={() => router.back()} // Navigate back
-                    classname="bg-yellow-500 w-20 h-8 rounded-full"
-                    textstyle={styles.textOne}
-                  />
-                  <ButtonOne
-                    style={styles.buttonNo}
-                    text="Next"
-                    onPress={()=> router.push("/steps/screen5")} // Trigger navigation to the next screen
-                    classname="bg-white w-20 h-8 rounded-full"
-                    textstyle={styles.textBlack}
-                  />
-                </View>
-            <Text className="text-gray-600 font-bold text-md">QUESTION 3 OF 5</Text>
+              <View className="w-full flex gap-5 flex-row justify-center items-center">
+                              <ButtonOne
+                                style={styles.buttonYes}
+                                text="Back"
+                                onPress={() => router.back()} // Navigate back
+                                classname="bg-yellow-500 w-20 h-8 rounded-full"
+                                textstyle={styles.textOne}
+                              />
+                              <ButtonOne
+                                style={styles.buttonNo}
+                                text="Next"
+                                onPress={()=> router.push("/pages/steps/screen3")} // Trigger navigation to the next screen
+                                classname="bg-white w-20 h-8 rounded-full"
+                                textstyle={styles.textBlack}
+                              />
+                            </View>
+            <Text className="text-gray-600 font-bold text-md">QUESTION 2 OF 5</Text>
 
           </View>
         }
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 10,
+    padding:4,
     flexWrap:"wrap",
   },
   textBlack: {

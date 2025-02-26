@@ -3,12 +3,12 @@ import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import images from "@/constants/image";
 import { Link, router } from "expo-router";
 
-export default function Login() {
+export default function SignUp() {
   const dataInputs = [
-    // {
-    //   title: "Full Names",
-    //   placeholder: "John Kalisa",
-    // },
+    {
+      title: "Full Names",
+      placeholder: "John Kalisa",
+    },
     {
       title: "Email",
       placeholder: "John@gmail.com",
@@ -20,7 +20,7 @@ export default function Login() {
   ];
 
   function handlePress() {
-    router.push("/(tabs)/steps/screen1");
+    router.push("/pages/login");
   }
 
   return (
@@ -29,7 +29,7 @@ export default function Login() {
       <View className="flex flex-row justify-center items-center pt-10 gap-2">
         <Image source={images.stars} className="h-8 w-8 -mt-4" />
         <Text className="font-bold text-2xl text-white">
-          Login To Your Account
+          Welcome To NeuroLab
         </Text>
       </View>
 
@@ -67,7 +67,7 @@ export default function Login() {
       <View className="flex items-center">
         <TouchableOpacity className="bg-yellow-500 w-full h-14 rounded-xl flex items-center justify-center">
           <Text className="text-white font-semibold text-xl" onPress={handlePress}>
-            Login
+            Sign Up
           </Text>
         </TouchableOpacity>
       </View>
@@ -82,7 +82,7 @@ export default function Login() {
             borderRadius: 50,
           }}
         />
-        <Text className="text-white font-medium">Or Login With</Text>
+        <Text className="text-white font-medium">Or Sign In With</Text>
         <View
           style={{
             backgroundColor: "white",
@@ -103,11 +103,11 @@ export default function Login() {
         {/* Already Have an Account */}
         <View className="flex flex-row gap-2 items-center">
           <Text className="text-white text-base font-medium">
-            Don't have an account
+            Already have an account?
           </Text>
           <TouchableOpacity onPress={handlePress}>
             <Text className="text-blue-500 text-base font-semibold">
-              Sign Up
+              Log In
             </Text>
           </TouchableOpacity>
         </View>

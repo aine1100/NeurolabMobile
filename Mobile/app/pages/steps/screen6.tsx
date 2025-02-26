@@ -2,16 +2,16 @@ import { FlatList, View, Text, SafeAreaView,StyleSheet } from "react-native";
 import SelectorQuestion from "@/components/selectorQuestion";
 import QuestionHeader from "@/components/questionHeader";
 import { useState } from "react";
-import { QuestionButton,ButtonOne } from "@/components/button";
+import { QuestionButton ,ButtonOne} from "@/components/button";
 import { router } from "expo-router";
 
-export default function QuestionTwo() {
+export default function QuestionFive() {
   // Array of text values for each selector block
   const questions = [
-    "High stress or anxiety",
-    "Moderate stress or occasional emotional fluctuations",
-    "Calm and emotionally stable",
-    "Other (e.g., grief, anger, or heightened excitement)"
+    "Well-rested (7–9 hours of sleep)",
+    "Partially rested (4–6 hours of sleep)",
+    "Sleep-deprived (less than 4 hours)",
+    "Unusual sleep pattern (e.g., interrupted or overslept)"
   ];
 
   // Set the default selected index
@@ -34,30 +34,31 @@ export default function QuestionTwo() {
           <View className="py-2 px-5">
             <QuestionHeader
               title="MENTAL AND ENV’T FACTORS"
-              percentage={40}
-              content="Have you been feeling particularly stressed, anxious, or experiencing strong emotions recently?"
+              percentage={100}
+              content="Did you watch any stimulating content, like a movie or video game, or were you exposed to bright lights or loud sounds before this test?"
             />
           </View>
         }
         ListFooterComponent={
           <View className="w-full gap-8 flex items-center justify-center px-5 py-4">
-              <View className="w-full flex gap-5 flex-row justify-center items-center">
-                              <ButtonOne
-                                style={styles.buttonYes}
-                                text="Back"
-                                onPress={() => router.back()} // Navigate back
-                                classname="bg-yellow-500 w-20 h-8 rounded-full"
-                                textstyle={styles.textOne}
-                              />
-                              <ButtonOne
-                                style={styles.buttonNo}
-                                text="Next"
-                                onPress={()=> router.push("/steps/screen3")} // Trigger navigation to the next screen
-                                classname="bg-white w-20 h-8 rounded-full"
-                                textstyle={styles.textBlack}
-                              />
-                            </View>
-            <Text className="text-gray-600 font-bold text-md">QUESTION 2 OF 5</Text>
+             <View className="w-full flex gap-5 flex-row justify-center items-center">
+                                          <ButtonOne
+                                            style={styles.buttonYes}
+                                            text="Back"
+                                            onPress={() => router.back()} // Navigate back
+                                            classname="bg-yellow-500 w-20 h-8 rounded-full"
+                                            textstyle={styles.textOne}
+                                          />
+                                          <ButtonOne
+                                            style={styles.buttonNo}
+                                            text="Next"
+                                            onPress={()=> router.push("/pages/steps/onboarding")} // Trigger navigation to the next screen
+                                            classname="bg-white w-20 h-8 rounded-full"
+                                            textstyle={styles.textBlack}
+                                          />
+                                        </View>
+          
+            <Text className="text-gray-600 font-bold text-md">QUESTION 5 OF 5</Text>
 
           </View>
         }
@@ -89,9 +90,8 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 10,
-    padding:4,
     flexWrap:"wrap",
+    fontSize: 10,
   },
   textBlack: {
     color: "white",

@@ -2,20 +2,23 @@ import { FlatList, View, Text, SafeAreaView,StyleSheet } from "react-native";
 import SelectorQuestion from "@/components/selectorQuestion";
 import QuestionHeader from "@/components/questionHeader";
 import { useState } from "react";
-import { QuestionButton ,ButtonOne} from "@/components/button";
-import { router } from "expo-router";
+import { QuestionButton,ButtonOne } from "@/components/button";
+import { useRouter } from "expo-router"; // Correct way to import router
 
-export default function QuestionFive() {
+export default function QuestionOne() {
   // Array of text values for each selector block
   const questions = [
     "Well-rested (7–9 hours of sleep)",
-    "Partially rested (4–6 hours of sleep)",
-    "Sleep-deprived (less than 4 hours)",
-    "Unusual sleep pattern (e.g., interrupted or overslept)"
+    "Slightly tired (5–6 hours of sleep)",
+    "Tired (3–4 hours of sleep)",
+    "Very tired (Less than 3 hours of sleep)"
   ];
 
   // Set the default selected index
   const [selected, setSelected] = useState(0);
+
+  // Initialize the router hook
+  const router = useRouter();
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -33,33 +36,34 @@ export default function QuestionFive() {
         ListHeaderComponent={
           <View className="py-2 px-5">
             <QuestionHeader
-              title="MENTAL AND ENV’T FACTORS"
-              percentage={100}
-              content="Did you watch any stimulating content, like a movie or video game, or were you exposed to bright lights or loud sounds before this test?"
+              title="SLEEP AND REST"
+              percentage={20}
+              content="Did you get enough sleep last night, or have you experienced any sleep deprivation recently?"
             />
           </View>
         }
         ListFooterComponent={
           <View className="w-full gap-8 flex items-center justify-center px-5 py-4">
+            {/* Ensure `handleFront` is properly passed */}
              <View className="w-full flex gap-5 flex-row justify-center items-center">
-                                          <ButtonOne
-                                            style={styles.buttonYes}
-                                            text="Back"
-                                            onPress={() => router.back()} // Navigate back
-                                            classname="bg-yellow-500 w-20 h-8 rounded-full"
-                                            textstyle={styles.textOne}
-                                          />
-                                          <ButtonOne
-                                            style={styles.buttonNo}
-                                            text="Next"
-                                            onPress={()=> router.push("/(tabs)/steps/onboarding")} // Trigger navigation to the next screen
-                                            classname="bg-white w-20 h-8 rounded-full"
-                                            textstyle={styles.textBlack}
-                                          />
-                                        </View>
-          
-            <Text className="text-gray-600 font-bold text-md">QUESTION 5 OF 5</Text>
-
+                              <ButtonOne
+                                style={styles.buttonYes}
+                                text="Back"
+                                onPress={() => router.back()} // Navigate back
+                                classname="bg-yellow-500 w-20 h-7 rounded-full"
+                                textstyle={styles.textOne}
+                              />
+                              <ButtonOne
+                                style={styles.buttonNo}
+                                text="Next"
+                                onPress={()=> router.push("/pages/steps/screen4")} // Trigger navigation to the next screen
+                                classname="bg-white w-20 h-7 rounded-full"
+                                textstyle={styles.textBlack}
+                              />
+                            </View>
+              
+           
+            <Text className="text-gray-600 font-bold text-md">QUESTION 1 OF 5</Text>
           </View>
         }
         keyExtractor={(item, index) => index.toString()} // Unique key for each item
@@ -90,8 +94,8 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
     textAlign: "center",
-    flexWrap:"wrap",
     fontSize: 10,
+    flexWrap:"wrap",
   },
   textBlack: {
     color: "white",
@@ -100,4 +104,3 @@ const styles = StyleSheet.create({
     color: "#111171",
   },
 });
-

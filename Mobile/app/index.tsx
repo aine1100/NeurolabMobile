@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 export default function SplashScreen(){
     useEffect(()=>{
         const timer=setTimeout(()=>{
-            router.push("/(tabs)/onboarding1")
+            router.push("/onboarding1")
         },3000)
         return () => clearTimeout(timer);
     })
