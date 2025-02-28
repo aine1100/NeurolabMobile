@@ -6,7 +6,7 @@ import {
   Text,
   Modal,
   TouchableOpacity,
-  Image,
+  Image,Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tabslayout from "./_layout";
@@ -18,32 +18,29 @@ import QuarterCircle from "@/components/chart";
 export default function Reports() {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const recommendations = [
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-      ],
-      duration:"2 days ago",
-    },
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-       
-      ],
-      duration:"2 days ago",
-    },
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-       
-      ],
-      duration:"2 days ago"
+  const [reports, setReports] = useState(null);
 
-    },
-  ];
+  const getReports = async () => {
+    try {
+      const response = await fetch("", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setReports(data);
+        console.log(data);
+        console.log("reports got successfully");
+      } else {
+        console.log("Failed to get reports");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -69,7 +66,7 @@ export default function Reports() {
               <View
                 style={{ display: "flex", flexDirection: "column", gap: 5 }}
               >
-                {recommendations.map((item, index) => (
+                {reports.map((item, index) => (
                   <TouchableOpacity
                     key={index}
                     style={{
@@ -94,7 +91,7 @@ export default function Reports() {
                       {item.title}
                     </Text>
                     <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%",alignItems:"center",gap:5}}>
-                    {item.rec.map((recommendation, recIndex) => (
+                    {item.rec.map((reports, recIndex) => (
                       <Text key={recIndex} style={{ marginTop: 5,fontSize:10,width:240 }}>
                          {recommendation}
                       </Text>

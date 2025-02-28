@@ -17,30 +17,28 @@ import QuarterCircle from "@/components/chart";
 
 export default function Recommendations() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [recommendations, setRecommendations] = useState(null);
 
-  const recommendations = [
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-        "Engage in activities that bring joy and fulfillment, like hobbies or creative pursuits",
-      ],
-    },
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-        "Engage in activities that bring joy and fulfillment, like hobbies or creative pursuits",
-      ],
-    },
-    {
-      title: "Maintain Mental Well-being:",
-      rec: [
-        "Practice mindfulness, meditation, or deep breathing to reduce stress.",
-        "Engage in activities that bring joy and fulfillment, like hobbies or creative pursuits",
-      ],
-    },
-  ];
+  const getRecommendations = async () => {
+    try {
+      const response = await fetch("", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRecommendations(data);
+        console.log(data);
+        console.log("Recommendations got successfully");
+      } else {
+        console.log("Failed to get Recommendations");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -71,34 +69,40 @@ export default function Recommendations() {
               <View
                 style={{ display: "flex", flexDirection: "column", gap: 5 }}
               >
-                {recommendations.map((item, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      padding: 15,
-                      alignItems: "flex-start",
-                      borderRadius: 10,
-                      backgroundColor: "#fff",
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.2,
-                      shadowRadius: 3.84,
-                      elevation: 5,
-                      marginBottom: 10,
-                      width: "100%",
-                      gap: 3,
-                    }}
-                  >
-                    <Text className="text-md font-semibold text-background-color">
-                      {item.title}
-                    </Text>
-                    {item.rec.map((recommendation, recIndex) => (
-                      <Text key={recIndex} style={{ marginTop: 5 }}>
-                         {recommendation}
+                {recommendations && recommendations.length > 0 ? (
+                  recommendations.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        padding: 15,
+                        alignItems: "flex-start",
+                        borderRadius: 10,
+                        backgroundColor: "#fff",
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 3.84,
+                        elevation: 5,
+                        marginBottom: 10,
+                        width: "100%",
+                        gap: 3,
+                      }}
+                    >
+                      <Text className="text-md font-semibold text-background-color">
+                        {item.title}
                       </Text>
-                    ))}
-                  </TouchableOpacity>
-                ))}
+                      {item.rec.map((recommendation, recIndex) => (
+                        <Text key={recIndex} style={{ marginTop: 5 }}>
+                          {recommendation}
+                        </Text>
+                      ))}
+                    </TouchableOpacity>
+                  ))
+                ) : (
+                  <Text style={{ textAlign: "center", marginTop: 20, fontSize: 16 }}>
+                    No Recommendations Found
+                  </Text>
+                )}
               </View>
             </View>
 
