@@ -17,7 +17,7 @@ import QuarterCircle from "@/components/chart";
 
 export default function Recommendations() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [recommendations, setRecommendations] = useState(null);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
 
   const getRecommendations = async () => {
     try {

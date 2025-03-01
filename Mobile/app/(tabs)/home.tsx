@@ -1,77 +1,81 @@
-import  { useState } from "react";
-import { FlatList, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useState } from "react";
+import Header from "@/components/header";
+import { FlatList, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Tabslayout from "./_layout";
 import { TextInput } from "react-native-paper";
 import * as DocumentPicker from 'expo-document-picker';
-import Header from "@/components/header";
-import Tabslayout from "./_layout";
+import * as FileSystem from 'expo-file-system';
 
 export default function Home() {
+  const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({
     patientName: "",
-    patientAge: "",
+    patientAge: ""
   });
-  const [file, setFile] = useState(null);
-
-  const userInput = [
-    { name: "Patient Name", key: "patientName" },
-    { name: "Patient Age", key: "patientAge" },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: ["text/csv", "application/vnd.ms-excel"],
       });
-      if (result.type === 'success') {
-        setFile(result);
+      if (!result.canceled) {
+        setFile(result.assets[0]);
       }
     } catch (err) {
       console.error(err);
+      setError("File selection failed");
     }
-  };
-
-  const handleInputChange = (key: keyof typeof formData, value: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [key]: value,
-    }));
   };
 
   const handleSubmit = async () => {
     if (!formData.patientName || !formData.patientAge || !file) {
-      alert("Please fill out all fields and upload a file.");
+      setError("Please fill all fields and select a file");
       return;
     }
 
-    const data = new FormData();
-    data.append('patientName', formData.patientName);
-    data.append('patientAge', formData.patientAge);
-    data.append('file', {
-      uri: file.uri,
-      name: file.name,
-      type: file.mimeType || 'text/csv',
-    });
-
+    setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/patient", {
+      const formPayload = new FormData();
+      formPayload.append("patientName", formData.patientName);
+      formPayload.append("patientAge", formData.patientAge);
+      
+      // Append file with proper type
+      formPayload.append("file", {
+        uri: file.uri,
+        name: file.name,
+        type: "text/csv",
+      } as any);
+
+      // POST Request
+      const response = await fetch("http://ngrok-domain.com/upload", {
         method: "POST",
+        body: formPayload,
         headers: {
+          "Accept": "application/json",
           "Content-Type": "multipart/form-data",
         },
-        body: data,
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        alert("Uploaded successfully");
-      } else {
-        alert("Upload failed");
-      }
-    } catch (err) {
-      alert("Failed to add data");
-      console.error(err);
+      if (!response.ok) throw new Error("Upload failed");
+      
+      // If successful, clear form
+      setFormData({ patientName: "", patientAge: "" });
+      setFile(null);
+      setError("");
+      alert("Data submitted successfully!");
+      
+      // GET Request example (optional)
+      // const getResponse = await fetch("YOUR_GET_ENDPOINT");
+      // const data = await getResponse.json();
+      // console.log(data);
+
+    } catch (error) {
+      setError(error.message || "An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,31 +95,50 @@ export default function Home() {
             <Text style={styles.subtitle}>Enter Your Personal Data for Analysis</Text>
 
             <View style={styles.inputContainer}>
-              {userInput.map((input) => (
-                <View style={styles.inputWrapper} key={input.key as string}>
-                  <Text style={styles.label}>{input.name}</Text>
-                  <TextInput
-                  
-                    placeholder={input.name}
-                    mode="outlined"
-                    style={styles.textInput}
-                    value={formData[input.key]}
-                    onChangeText={(value) => handleInputChange(input.key, value)}
-                  />
-                </View>
-              ))}
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Patient Name</Text>
+                <TextInput
+                  placeholder="Patient Name"
+                  value={formData.patientName}
+                  onChangeText={(text) => setFormData({...formData, patientName: text})}
+                  mode="outlined"
+                  style={styles.textInput}
+                />
+              </View>
 
+              <View style={styles.inputWrapper}>
+                <Text style={styles.label}>Patient Age</Text>
+                <TextInput
+                  placeholder="Patient Age"
+                  value={formData.patientAge}
+                  onChangeText={(text) => setFormData({...formData, patientAge: text})}
+                  mode="outlined"
+                  style={styles.textInput}
+                  keyboardType="numeric"
+                />
+              </View>
+              
               <TouchableOpacity style={styles.uploadButton} onPress={pickFile}>
                 <Text style={styles.uploadButtonText}>
                   {file ? file.name : "Upload CSV File"}
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-                <Text style={styles.submitButtonText}>Submit</Text>
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+              <TouchableOpacity 
+                style={[styles.submitButton, loading && styles.disabledButton]}
+                onPress={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <Text style={styles.submitButtonText}>Submit Data</Text>
+                )}
               </TouchableOpacity>
             </View>
-
+            
             <Tabslayout />
           </View>
         }
@@ -128,6 +151,7 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  // Existing styles remain the same
   headerContainer: {
     position: "absolute",
     top: 20,
@@ -179,21 +203,38 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingTop: 80,
+    paddingBottom: 50,
+  },
+  // New styles added
   submitButton: {
-    backgroundColor: "#28A745",
-    padding: 15,
+    backgroundColor: "#28a745",
+    padding: 16,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 15,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  disabledButton: {
+    backgroundColor: "#6c757d",
+    opacity: 0.7,
   },
   submitButtonText: {
     color: "#FFF",
     fontWeight: "bold",
     fontSize: 16,
+    letterSpacing: 0.5,
   },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingTop: 80,
-    paddingBottom: 50,
+  errorText: {
+    color: "#dc3545",
+    textAlign: "center",
+    marginVertical: 10,
+    fontWeight: "500",
   },
 });

@@ -27,14 +27,20 @@
       [
         "expo-splash-screen",
         {
-         
-  
           "backgroundColor": "#ffffff"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "566ae63d-42da-4a59-9aab-0a09ec570fb6"
+      }
     }
   }
 }

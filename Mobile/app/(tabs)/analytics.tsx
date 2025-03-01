@@ -17,6 +17,18 @@ import QuarterCircle from "@/components/chart";
 
 export default function Analytics() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [userData,setUserData]=useState(null)
+  
+const fetchRootDirectory = async (): Promise<void> => {
+  try {
+    const response = await fetch("http://ngrok-domain.com/");
+    const data = await response.json();
+    console.log("Root Directory Response:", data);
+    setUserData(data)
+  } catch (error) {
+    console.error("Error fetching root directory:", error);
+  }
+};
 
   const analysis = [
     {
