@@ -3,16 +3,10 @@ import Header from "@/components/header";
 import { FlatList, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tabslayout from "./_layout";
-import { TextInput } from "react-native-paper";
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
 
 export default function Home() {
   const [file, setFile] = useState(null);
-  const [formData, setFormData] = useState({
-    patientName: "",
-    patientAge: ""
-  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,6 +16,7 @@ export default function Home() {
         type: ["text/csv", "application/vnd.ms-excel"],
       });
       if (!result.canceled) {
+        console.log(result.assets[0]); // Log the file data to check
         setFile(result.assets[0]);
       }
     } catch (err) {
@@ -31,26 +26,21 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.patientName || !formData.patientAge || !file) {
-      setError("Please fill all fields and select a file");
+    if (!file) {
+      setError("Please select a file");
       return;
     }
 
     setLoading(true);
     try {
       const formPayload = new FormData();
-      formPayload.append("patientName", formData.patientName);
-      formPayload.append("patientAge", formData.patientAge);
-      
-      // Append file with proper type
       formPayload.append("file", {
         uri: file.uri,
         name: file.name,
-        type: "text/csv",
-      } as any);
+        type: "text/csv",  // Ensure the file type matches what the server expects
+      });
 
-      // POST Request
-      const response = await fetch("http://ngrok-domain.com/upload", {
+      const response = await fetch("http://10.11.75.22:8000/upload", {
         method: "POST",
         body: formPayload,
         headers: {
@@ -59,20 +49,16 @@ export default function Home() {
         },
       });
 
-      if (!response.ok) throw new Error("Upload failed");
-      
+      const responseData = await response.json();
+      console.log(responseData);  // Log response data to see what the backend is returning
+      if (!response.ok) throw new Error(responseData.message || "Upload failed");
+
       // If successful, clear form
-      setFormData({ patientName: "", patientAge: "" });
       setFile(null);
       setError("");
       alert("Data submitted successfully!");
-      
-      // GET Request example (optional)
-      // const getResponse = await fetch("YOUR_GET_ENDPOINT");
-      // const data = await getResponse.json();
-      // console.log(data);
-
     } catch (error) {
+      console.error(error);
       setError(error.message || "An error occurred");
     } finally {
       setLoading(false);
@@ -95,29 +81,6 @@ export default function Home() {
             <Text style={styles.subtitle}>Enter Your Personal Data for Analysis</Text>
 
             <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Patient Name</Text>
-                <TextInput
-                  placeholder="Patient Name"
-                  value={formData.patientName}
-                  onChangeText={(text) => setFormData({...formData, patientName: text})}
-                  mode="outlined"
-                  style={styles.textInput}
-                />
-              </View>
-
-              <View style={styles.inputWrapper}>
-                <Text style={styles.label}>Patient Age</Text>
-                <TextInput
-                  placeholder="Patient Age"
-                  value={formData.patientAge}
-                  onChangeText={(text) => setFormData({...formData, patientAge: text})}
-                  mode="outlined"
-                  style={styles.textInput}
-                  keyboardType="numeric"
-                />
-              </View>
-              
               <TouchableOpacity style={styles.uploadButton} onPress={pickFile}>
                 <Text style={styles.uploadButtonText}>
                   {file ? file.name : "Upload CSV File"}
@@ -151,7 +114,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  // Existing styles remain the same
   headerContainer: {
     position: "absolute",
     top: 20,
@@ -179,18 +141,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     gap: 10,
   },
-  inputWrapper: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: "#333",
-  },
-  textInput: {
-    backgroundColor: "#FFF",
-    borderRadius: 8,
-  },
   uploadButton: {
     backgroundColor: "#007BFF",
     padding: 15,
@@ -208,7 +158,6 @@ const styles = StyleSheet.create({
     paddingTop: 80,
     paddingBottom: 50,
   },
-  // New styles added
   submitButton: {
     backgroundColor: "#28a745",
     padding: 16,
