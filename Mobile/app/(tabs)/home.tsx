@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/header";
-import { FlatList, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import { FlatList, Alert, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tabslayout from "./_layout";
 import * as DocumentPicker from 'expo-document-picker';
@@ -9,6 +9,8 @@ export default function Home() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [response, setResponse] = useState(null);
 
   const pickFile = async () => {
     try {
@@ -16,7 +18,7 @@ export default function Home() {
         type: ["text/csv", "application/vnd.ms-excel"],
       });
       if (!result.canceled) {
-        console.log(result.assets[0]); // Log the file data to check
+        console.log(result.assets[0]);
         setFile(result.assets[0]);
       }
     } catch (err) {
@@ -37,7 +39,7 @@ export default function Home() {
       formPayload.append("file", {
         uri: file.uri,
         name: file.name,
-        type: "text/csv",  // Ensure the file type matches what the server expects
+        type: "text/csv",
       });
 
       const response = await fetch("http://10.11.75.22:8000/upload", {
@@ -50,13 +52,14 @@ export default function Home() {
       });
 
       const responseData = await response.json();
-      console.log(responseData);  // Log response data to see what the backend is returning
+      console.log(responseData);
       if (!response.ok) throw new Error(responseData.message || "Upload failed");
 
-      // If successful, clear form
       setFile(null);
       setError("");
-      alert("Data submitted successfully!");
+      setResponse(responseData);
+      setModalVisible(true);
+      Alert.alert("Data submitted successfully!");
     } catch (error) {
       console.error(error);
       setError(error.message || "An error occurred");
@@ -100,8 +103,39 @@ export default function Home() {
                   <Text style={styles.submitButtonText}>Submit Data</Text>
                 )}
               </TouchableOpacity>
+
+              {loading && <ActivityIndicator size="large" color="blue" />}
+
+              {response && (
+                <Modal
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View style={styles.modalOverlay}>
+                    <View style={styles.modal}>
+                      <Text style={styles.title}>Predicted States</Text>
+                      {response.predicted_state.map((state, index) => (
+                        <Text key={index}>State {index + 1}: {state}</Text>
+                      ))}
+
+                      <Text style={styles.title}>Recommendations</Text>
+                      {response.recommendations.map((rec, index) => (
+                        <Text key={index}>- {rec}</Text>
+                      ))}
+
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={styles.submitButton}
+                      >
+                        <Text style={styles.submitButtonText}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+              )}
             </View>
-            
+
             <Tabslayout />
           </View>
         }
@@ -164,11 +198,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 15,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
   },
   disabledButton: {
     backgroundColor: "#6c757d",
@@ -178,12 +207,24 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "bold",
     fontSize: 16,
-    letterSpacing: 0.5,
   },
   errorText: {
     color: "#dc3545",
     textAlign: "center",
     marginVertical: 10,
     fontWeight: "500",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modal: {
+    width: "80%",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
   },
 });

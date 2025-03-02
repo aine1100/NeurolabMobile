@@ -5,10 +5,10 @@ import { Link, router } from "expo-router";
 
 export default function SignUp() {
   const dataInputs = [
-    {
-      title: "Full Names",
-      placeholder: "John Kalisa",
-    },
+    // {
+    //   title: "Full Names",
+    //   placeholder: "John Kalisa",
+    // },
     {
       title: "Email",
       placeholder: "John@gmail.com",

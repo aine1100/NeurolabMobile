@@ -20,7 +20,7 @@ export default function Login() {
   ];
 
   function handlePress() {
-    router.push("/pages/steps/screen1");
+    router.push("/(tabs)/home");
   }
 
   return (
