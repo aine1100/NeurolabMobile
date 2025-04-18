@@ -4,13 +4,13 @@ import images from "@/constants/image";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 
-export default function Login() {
+export default function ChangePassword() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false); // Track loading state
 
   const dataInputs = [
-    { title: "Email", placeholder: "John@gmail.com", key: "email" },
-    { title: "Password", placeholder: "********", key: "password" },
+    { title: "Enter your new Password", placeholder: "*********", key: "password" },
+    { title: "Confirm your Password", placeholder: "*********", key: "password" },
   ];
 
   // Handle input change
@@ -22,7 +22,7 @@ export default function Login() {
   const handlePress = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await fetch("http://192.168.179.69:5000/api/login", {
+      const response = await fetch("", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -30,7 +30,6 @@ export default function Login() {
 
       const result = await response.json();
       if (response.ok) {
-        Alert.alert("Success", "Login successful!");
         router.push("/(tabs)/home"); // Redirect to home
       } else {
         Alert.alert("Error", result.message || "Invalid credentials");
@@ -45,7 +44,7 @@ export default function Login() {
     <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start px-5 pb-2 gap-5">
       {/* Welcome Message */}
       <View className="flex flex-row justify-center items-center pt-10 gap-2">
-        <Text className="font-bold text-2xl text-white">Login To Your Account</Text>
+        <Text className="font-bold text-2xl text-white">Reset Password</Text>
       </View>
 
       {/* <View className="flex flex-row justify-center">
@@ -63,7 +62,7 @@ export default function Login() {
               placeholder={input.placeholder}
               placeholderTextColor="#FFFFFF"
               className="h-12 bg-[#2C2C4A] w-full px-5 rounded-md placeholder:text-md"
-              secureTextEntry={input.key === "password"}
+        
               value={formData[input.key]}
               onChangeText={(text) => handleChange(input.key, text)}
             />
@@ -72,9 +71,7 @@ export default function Login() {
       </View>
 
       {/* Forgot Password Link */}
-      <View className="flex items-end">
-        <Link href="/" className="text-white text-right mr-5">Forgot Password?</Link>
-      </View>
+   
 
       {/* Login Button */}
       <View className="flex items-center p-2">
@@ -86,7 +83,7 @@ export default function Login() {
           {loading ? (
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
-            <Text className="text-white font-semibold text-xl">Login</Text>
+            <Text className="text-white font-semibold text-xl">Change Password</Text>
           )}
         </TouchableOpacity>
       </View>

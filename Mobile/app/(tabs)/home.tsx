@@ -1,9 +1,21 @@
 import { useState } from "react";
 import Header from "@/components/header";
-import { FlatList, Alert, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Modal } from "react-native";
+import {
+  FlatList,
+  Alert,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Modal,
+  StatusBar, // Import StatusBar
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tabslayout from "./_layout";
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from "expo-document-picker";
+import Box from "@/components/dashboard/box";
+import LiveEEGChart from "@/components/dashboard/LiveEegData";
 
 export default function Home() {
   const [file, setFile] = useState(null);
@@ -12,14 +24,28 @@ export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
   const [response, setResponse] = useState(null);
 
+  const allowedTypes = [".bdf", ".gdf", ".csv", ".edf", ".txt"];
+
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: ["text/csv", "application/vnd.ms-excel"],
+        type: [
+          "text/csv",
+          "application/vnd.ms-excel",
+          "text/plain",
+          "application/octet-stream",
+          "text/plain",
+        ],
       });
+
       if (!result.canceled) {
-        console.log(result.assets[0]);
+        const fileExt = result.assets[0].name.split(".").pop();
+        if (!allowedTypes.includes(`.${fileExt}`)) {
+          setError("Invalid file type. Only BDF, GDF, CSV, and EDF files are allowed.");
+          return;
+        }
         setFile(result.assets[0]);
+        setError("");
       }
     } catch (err) {
       console.error(err);
@@ -32,33 +58,40 @@ export default function Home() {
       setError("Please select a file");
       return;
     }
-
     setLoading(true);
     try {
       const formPayload = new FormData();
       formPayload.append("file", {
         uri: file.uri,
         name: file.name,
-        type: "text/csv",
+        type: file.mimeType || "application/octet-stream",
       });
 
-      const response = await fetch("http://10.11.75.22:8000/upload", {
+      const response = await fetch("https://neurai-api.onrender.com/upload", {
         method: "POST",
         body: formPayload,
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      const responseData = await response.json();
-      console.log(responseData);
+      const textData = await response.text();
+      let responseData;
+
+      try {
+        responseData = JSON.parse(textData);
+      } catch (error) {
+        throw new Error("Invalid JSON response: " + textData);
+      }
+
       if (!response.ok) throw new Error(responseData.message || "Upload failed");
 
       setFile(null);
       setError("");
       setResponse(responseData);
       setModalVisible(true);
+
+      let recommendation = responseData.clinical_recommendations;
+      await sendRecommendations(recommendation);
+
       Alert.alert("Data submitted successfully!");
     } catch (error) {
       console.error(error);
@@ -68,103 +101,120 @@ export default function Home() {
     }
   };
 
+  const sendRecommendations = async (recommendation) => {
+    try {
+      if (!recommendation) {
+        setError("No recommendations found");
+        return;
+      }
+
+      const formattedRecommendation = Array.isArray(recommendation)
+        ? recommendation.join(". ")
+        : recommendation;
+
+      console.log(formattedRecommendation);
+
+      const dbResponse = await fetch("http://10.12.74.84:5000/api/eegdata/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recommendation: formattedRecommendation }),
+      });
+
+      const dbResponseData = await dbResponse.json();
+
+      if (!dbResponse.ok) {
+        throw new Error(dbResponseData.message || "Failed to save recommendations");
+      }
+
+      Alert.alert("Recommendations saved successfully!");
+    } catch (err) {
+      console.log(err);
+      setError(err.message || "An error occurred while saving recommendations");
+    }
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F5F5F5" }}>
-      <View style={styles.headerContainer}>
-        <Header />
-      </View>
-
-      <FlatList
-        data={[]}
-        renderItem={() => null}
-        keyExtractor={(_, index) => index.toString()}
-        ListHeaderComponent={
-          <View style={styles.contentContainer}>
-            <Text style={styles.title}>Welcome</Text>
-            <Text style={styles.subtitle}>Enter Your Personal Data for Analysis</Text>
-
-            <View style={styles.inputContainer}>
-              <TouchableOpacity style={styles.uploadButton} onPress={pickFile}>
-                <Text style={styles.uploadButtonText}>
-                  {file ? file.name : "Upload CSV File"}
-                </Text>
-              </TouchableOpacity>
-
-              {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-              <TouchableOpacity 
-                style={[styles.submitButton, loading && styles.disabledButton]}
-                onPress={handleSubmit}
-                disabled={loading}
-              >
-                {loading ? (
-                  <ActivityIndicator color="#FFF" />
-                ) : (
-                  <Text style={styles.submitButtonText}>Submit Data</Text>
-                )}
-              </TouchableOpacity>
-
-              {loading && <ActivityIndicator size="large" color="blue" />}
-
-              {response && (
-                <Modal
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => setModalVisible(false)}
-                >
-                  <View style={styles.modalOverlay}>
-                    <View style={styles.modal}>
-                      <Text style={styles.title}>Predicted States</Text>
-                      {response.predicted_state.map((state, index) => (
-                        <Text key={index}>State {index + 1}: {state}</Text>
-                      ))}
-
-                      <Text style={styles.title}>Recommendations</Text>
-                      {response.recommendations.map((rec, index) => (
-                        <Text key={index}>- {rec}</Text>
-                      ))}
-
-                      <TouchableOpacity
-                        onPress={() => setModalVisible(false)}
-                        style={styles.submitButton}
-                      >
-                        <Text style={styles.submitButtonText}>Close</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </Modal>
-              )}
-            </View>
-
-            <Tabslayout />
-          </View>
-        }
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+    <SafeAreaView style={styles.container}>
+      {/* Add StatusBar to control its appearance */}
+      <StatusBar
+        barStyle="light-content" // Use "dark-content" if you want dark icons
+        backgroundColor="transparent" // Make status bar transparent or set a specific color
+        translucent={true} // Allow content with safe area to go under the status bar
       />
+      <Header />
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Welcome Back</Text>
+
+        {/* <TouchableOpacity style={styles.uploadButton} onPress={pickFile}>
+          <Text style={styles.uploadButtonText}>{file ? file.name : "Upload File"}</Text>
+        </TouchableOpacity>
+
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        <TouchableOpacity
+          style={[styles.submitButton, loading && styles.disabledButton]}
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? <ActivityIndicator color="#FFF" /> : <Text style={styles.submitButtonText}>Submit Data</Text>}
+        </TouchableOpacity>
+
+        {loading && <ActivityIndicator size="large" color="blue" />} */}
+     <View style={styles.container2}>
+      <Box title="Total Reports" data="100" />
+      <Box title="Total Reports" data="100" />
+    </View>
+    <LiveEEGChart/>
+        {response && (
+          <Modal transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+            <View style={styles.modalOverlay}>
+              <View style={styles.modal}>
+                <Text style={styles.title}>Clinical Recommendations</Text>
+                {response.clinical_recommendations?.length ? (
+                  response.clinical_recommendations.map((rec, index) => (
+                    <Text key={index} style={{ marginBottom: 5 }}>{rec}</Text>
+                  ))
+                ) : (
+                  <Text>No recommendations available</Text>
+                )}
+
+                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.submitButton}>
+                  <Text style={styles.submitButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        )}
+      </View>
+      <Tabslayout />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    position: "absolute",
-    top: 20,
-    left: 0,
-    right: 0,
-    zIndex: 10,
+  container2: {
+    flexDirection: "row", // Tailwind's flex + flexDirection: "row"
+    // flexWrap: "wrap", // flexWrap: "wrap"
+    justifyContent: "center", // Tailwind's justify-center
+    alignItems: "center", // Tailwind's items-center
+    padding: 20, // padding: 20
+    marginBottom: 10, // marginBottom: 10
+    columnGap: 10, // Inline gap: 10 (or use 20 for Tailwind's gap-5)
+    rowGap: 10, // Inline gap: 10 (for wrapped rows)
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#000026",
+    // Remove paddingTop since StatusBar is translucent
   },
   contentContainer: {
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    padding: 20,
   },
   title: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
     textAlign: "center",
-    color: "#333",
+    color: "#FFF",
   },
   subtitle: {
     fontSize: 18,
@@ -172,25 +222,16 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 20,
   },
-  inputContainer: {
-    gap: 10,
-  },
   uploadButton: {
     backgroundColor: "#007BFF",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
   },
   uploadButtonText: {
     color: "#FFF",
     fontWeight: "bold",
     fontSize: 16,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingTop: 80,
-    paddingBottom: 50,
   },
   submitButton: {
     backgroundColor: "#28a745",

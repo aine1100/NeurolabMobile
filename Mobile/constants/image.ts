@@ -34,8 +34,8 @@ import Handshake from "@/assets/images/Handshake.png"
 import sleep from "@/assets/images/sleep.png"
 import school from "@/assets/images/school.png"
 import heart from "@/assets/images/heart.png"
-
-
+import logoIcon from "@/assets/images/head.png"
+import person from "@/assets/images/person.png"
 
 
 
@@ -82,5 +82,7 @@ profile,
 Handshake,
 school,
 sleep,
-heart
+heart,
+logoIcon,
+person
 }
