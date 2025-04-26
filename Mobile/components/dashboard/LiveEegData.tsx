@@ -122,18 +122,29 @@ const LiveEEGChart: React.FC = () => {
           <Text style={styles.legendText}>Relaxation Level (%)</Text>
         </View>
       </View>
-      <LineChart
-        data={datasets[0]}
-        data2={datasets[1]}
-        data3={datasets[2]}
-        data4={datasets[3]}
-        width={width - 40}
-        height={220}
+     <View style={{width:"80%", padding:5}}>
+
+     <LineChart
+        data={datasets[0].data} // First dataset
+        data2={datasets[1].data} // Second dataset
+        data3={datasets[2].data} // Third dataset
+        data4={datasets[3].data} // Fourth dataset
+        color="rgb(75, 192, 192)" // Color for first dataset
+        color2="rgb(255, 99, 132)" // Color for second dataset
+        color3="rgb(255, 205, 86)" // Color for third dataset
+        color4="rgb(54, 162, 235)" // Color for fourth dataset
+        strokeWidth={1}
+        withDots={true}
+        dotColor="rgb(75, 192, 192)" // Dot color for first dataset
+        dotColor2="rgb(255, 99, 132)" // Dot color for second dataset
+        dotColor3="rgb(255, 205, 86)" // Dot color for third dataset
+        dotColor4="rgb(54, 162, 235)" // Dot color for fourth dataset
+        width={width -150}
+        height={200}
         yAxisLabel="%"
         xAxisLabel="Time"
         xLabels={chartData.labels}
         withShadow={false}
-        withDots={true}
         withHorizontalLines={true}
         yAxisColor="#FFFFFF"
         xAxisColor="#FFFFFF"
@@ -146,19 +157,21 @@ const LiveEEGChart: React.FC = () => {
         curvature={0.1} // Similar to Chart.js tension: 0.4
         initialSpacing={20}
         endSpacing={20}
-        backgroundColor="#1E1E2F"
+        backgroundColor="#030833"
         hideRules={false}
         rulesColor="rgba(255, 255, 255, 0.2)"
       />
+     </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: "#1E1E2F",
+    padding: 10,
+    backgroundColor: "#030833",
     borderRadius: 10,
+    width:"100%"
   },
   title: {
     fontSize: 18,

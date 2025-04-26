@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Image, TouchableOpacity, TextInput, Alert, ActivityIndicator } from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput, Alert, ActivityIndicator, StatusBar } from "react-native";
 import images from "@/constants/image";
 import { Link, router } from "expo-router";
 import { useState } from "react";
@@ -22,7 +22,7 @@ export default function Login() {
   const handlePress = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await fetch("http://192.168.179.69:5000/api/login", {
+      const response = await fetch("http://10.11.74.109:5000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -43,6 +43,11 @@ export default function Login() {
 
   return (
     <SafeAreaView className="h-full w-full bg-background-color flex flex-col justify-start px-5 pb-2 gap-5">
+       <StatusBar
+        barStyle="light-content" // Use "dark-content" if you want dark icons
+        backgroundColor="transparent" // Make status bar transparent or set a specific color
+        translucent={true} // Allow content with safe area to go under the status bar
+      />
       {/* Welcome Message */}
       <View className="flex flex-row justify-center items-center pt-10 gap-2">
         <Text className="font-bold text-2xl text-white">Login To Your Account</Text>

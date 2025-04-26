@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { View, Image, Text, TouchableOpacity, StatusBar } from "react-native";
 
 import OnboardingText from "@/components/onboardingText";
 import { router } from "expo-router";
@@ -11,6 +11,11 @@ export default function Onboarding() {
   }
   return (
     <SafeAreaView className="bg-background-color h-full flex flex-col items-center justify-center gap-20 p-10">
+       <StatusBar
+        barStyle="light-content" // Use "dark-content" if you want dark icons
+        backgroundColor="transparent" // Make status bar transparent or set a specific color
+        translucent={true} // Allow content with safe area to go under the status bar
+      />
       {/* Logo Section */}
       <View className="flex flex-row items-center justify-center pt-10">
         <Image source={images.logo} alt="Logo" className="size-20" />

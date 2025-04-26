@@ -9,13 +9,15 @@ import {
   StyleSheet,
   ActivityIndicator,
   Modal,
-  StatusBar, // Import StatusBar
+  StatusBar,
+  ScrollView, // Import StatusBar
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Tabslayout from "./_layout";
 import * as DocumentPicker from "expo-document-picker";
 import Box from "@/components/dashboard/box";
 import LiveEEGChart from "@/components/dashboard/LiveEegData";
+import AnalyticBox from "@/components/dashboard/analyticBox";
 
 export default function Home() {
   const [file, setFile] = useState(null);
@@ -114,7 +116,7 @@ export default function Home() {
 
       console.log(formattedRecommendation);
 
-      const dbResponse = await fetch("http://10.12.74.84:5000/api/eegdata/", {
+      const dbResponse = await fetch("http://10.11.74.109:5000/api/eegdata/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recommendation: formattedRecommendation }),
@@ -142,7 +144,7 @@ export default function Home() {
         translucent={true} // Allow content with safe area to go under the status bar
       />
       <Header />
-      <View style={styles.contentContainer}>
+      <ScrollView style={styles.contentContainer}>
         <Text style={styles.title}>Welcome Back</Text>
 
         {/* <TouchableOpacity style={styles.uploadButton} onPress={pickFile}>
@@ -165,6 +167,13 @@ export default function Home() {
       <Box title="Total Reports" data="100" />
     </View>
     <LiveEEGChart/>
+   <View style={styles.container3}>
+   <AnalyticBox title="Relaxed" answerResult="Your brain seems to be stressed today" />
+   
+   </View>
+   <View style={{alignItems:"flex",flexDirection:"column",width:"100%",alignContent:"flex-start",}}>
+    <Text style={{fontSize:12,color:"white"}} >Recent Ai Recommendations</Text>
+   </View>
         {response && (
           <Modal transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
             <View style={styles.modalOverlay}>
@@ -185,7 +194,7 @@ export default function Home() {
             </View>
           </Modal>
         )}
-      </View>
+      </ScrollView>
       <Tabslayout />
     </SafeAreaView>
   );
@@ -198,6 +207,16 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Tailwind's justify-center
     alignItems: "center", // Tailwind's items-center
     padding: 20, // padding: 20
+    marginBottom: 10, // marginBottom: 10
+    columnGap: 10, // Inline gap: 10 (or use 20 for Tailwind's gap-5)
+    rowGap: 10, // Inline gap: 10 (for wrapped rows)
+  },
+  container3: {
+    flexDirection: "row", // Tailwind's flex + flexDirection: "row"
+    // flexWrap: "wrap", // flexWrap: "wrap"
+    justifyContent: "center", // Tailwind's justify-center
+    alignItems: "center", // Tailwind's items-center
+    paddingTop:20,
     marginBottom: 10, // marginBottom: 10
     columnGap: 10, // Inline gap: 10 (or use 20 for Tailwind's gap-5)
     rowGap: 10, // Inline gap: 10 (for wrapped rows)
